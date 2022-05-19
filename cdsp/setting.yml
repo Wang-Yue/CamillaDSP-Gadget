@@ -1,0 +1,21 @@
+---
+devices:
+  samplerate: 705600
+  chunksize: 2048
+  enable_rate_adjust: true
+  stop_on_rate_change: true
+  rate_measure_interval: 0.01
+  enable_resampling: true
+  resampler_type: BalancedAsync
+  capture_samplerate: 44100
+  capture:
+    type: ALSA
+    device: "gadget"
+    channels: 2
+    format: S32LE
+  playback:
+    type: ALSA
+    channels: 2
+    device: "hw:CARD=Pro"
+    format: S32LE
+
