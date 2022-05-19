@@ -25,6 +25,8 @@ try:
     config['devices']['chunksize'] = 512
   elif rate > 384000:
     config['devices']['chunksize'] = 256
+  enable_resampling = rate != config['devices']['samplerate']
+  config['devices']['enable_resampling'] = enable_resampling
   c.set_config(config)
   print("VIS: Successfully adjust to the new sample rate!")
   c.disconnect()
@@ -48,20 +50,16 @@ try:
   if config == None:
     config = c.get_previous_config()
     print("DSP: Get previous config.")
-  if rate in [44100, 88200, 176400, 352800, 705600]:
-    config['devices']['samplerate'] = 705600
-  elif rate in [48000, 96000, 192000, 384000, 768000]:
-    config['devices']['samplerate'] = 768000
   config['devices']['capture_samplerate'] = rate
-  if rate > 0 and rate <= 96000:
-    config['devices']['chunksize'] = 8192
-  elif rate > 96000 and rate <= 192000:
-    config['devices']['chunksize'] = 8192
-  elif rate > 192000 and rate <=384000:
-    config['devices']['chunksize'] = 4096
-  elif rate > 384000:
-    config['devices']['chunksize'] = 2048
-  config['devices']['capture_samplerate'] = rate
+  if rate > 96000:
+    config['devices']['samplerate'] = rate
+  elif rate in [44100, 88200]:
+    config['devices']['samplerate'] = 176400
+  elif rate in [48000, 96000]:
+    config['devices']['samplerate'] = 192000
+  config['devices']['chunksize'] = 2048
+  enable_resampling = rate != config['devices']['samplerate']
+  config['devices']['enable_resampling'] = enable_resampling
   c.set_config(config)
   print("DSP: Successfully adjust to the new sample rate!")
   c.disconnect()
